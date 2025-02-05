@@ -1,20 +1,21 @@
 ﻿
 using Data.Entities;
-using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Contexts;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
+ 
+    public DbSet<CustomerEntity> Customers { get; set; } = null!;
 
-
-    public DbSet<UserEntity> Users { get; set; } = null!;
+    public DbSet<ProductEntity> Products { get; set; } = null!;
 
     public DbSet<ProjectEntity> Projects { get; set; } = null!;
+
+    public DbSet<StatusType> StatusTypes { get; set; } = null!;
+
+    public DbSet<UserEntity> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

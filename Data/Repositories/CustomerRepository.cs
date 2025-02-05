@@ -13,8 +13,8 @@ namespace Data.Repositories
 {
     public class CustomerRepository : BaseRepository<CustomerEntity>
     {
-        private readonly DataContext _context;
-        public CustomerRepository(DataContext context) : base(context)
+        private readonly AppDbContext _context;
+        public CustomerRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }

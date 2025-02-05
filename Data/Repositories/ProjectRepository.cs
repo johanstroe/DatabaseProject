@@ -10,7 +10,7 @@ namespace Data.Repositories
 {
     public class ProjectRepository : BaseRepository<ProjectEntity>
     {
-        public ProjectRepository(DataContext context) : base(context)
+        public ProjectRepository(AppDbContext context) : base(context)
         {
         }
 

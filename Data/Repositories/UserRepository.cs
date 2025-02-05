@@ -10,7 +10,7 @@ namespace Data.Repositories
 {
     public class UserRepository : BaseRepository<UserEntity>
     {
-        public UserRepository(DataContext context) : base(context)
+        public UserRepository(AppDbContext context) : base(context)
         {
         }
     }
