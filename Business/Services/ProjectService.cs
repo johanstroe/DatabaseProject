@@ -20,6 +20,7 @@ public class ProjectService
     {
         _projectRepository = projectRepository;
         _userService = userService;
+        
     }
 
     public async Task<bool> CreateProjectAsync(CreateProjectDto dto)
@@ -28,6 +29,7 @@ public class ProjectService
             return false;
 
         var project = await _projectRepository.ExistsAsync(x => x.ProjectName == dto.ProjectName);
+        
         if (project)
             return false;
 
@@ -42,30 +44,32 @@ public class ProjectService
 
   
 
-    //public async Task<IEnumerable<ProjectEntity>> GetAllAsync()
-    //{
-    //    return await _context.Projects.Include(p => p.ResponsibleUser).ToListAsync(); //Användning av eager loading, och laddar information om den ansvariga användaren för varje projekt. 
-    //}
+    public async Task<IEnumerable<ProjectEntity>> GetAllAsync()
+    {
+        return await _projectRepository.GetAllAsync() ?? [];
+    }
 
-    //public async Task<bool> UpdateAsync(ProjectEntity project)
-    //{
-    //    _context.Projects.Update(project);
-    //    return await _context.SaveChangesAsync() > 0;
-    //}
-    //public async Task<bool> DeleteAsync(int projectId)
-    //{
-    //    var project = await GetByIdAsync(projectId);
-    //    if (project == null) return false;
-    //    _context.Projects.Remove(project);
-    //    return await _context.SaveChangesAsync() > 0;
-    //}
+    public async Task<IEnumerable<ProjectEntity>> GetOneAsync(string getOne)
+    {
+        return await _projectRepository.GetOneAsync(p => p.getOne == getOne) ?? [];
+        
+    }
+
+    public async Task<bool> UpdateAsync(ProjectEntity project)
+    {
+        _context.Projects.Update(project);
+        return await _context.SaveChangesAsync() > 0;
+    }
+    public async Task<bool> DeleteAsync(int projectId) 
+    { 
+    
+    }
 
 
-    //public async Task<ProjectEntity?> GetByIdAsync(int projectId)
-    //{
-    //    return await _context.Projects.Include(p => p.ResponsibleUser)
-    //                                  .FirstOrDefaultAsync(p => p.ProjectId == projectId);
-    //}
+    public async Task<ProjectEntity?> GetByIdAsync(int projectId)
+    {
+       
+    }
 
     
 }

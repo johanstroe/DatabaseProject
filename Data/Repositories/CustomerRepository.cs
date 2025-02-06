@@ -4,11 +4,6 @@ using Data.Entities;
 
 namespace Data.Repositories;
 
-public class CustomerRepository : BaseRepository<CustomerEntity>
+public class CustomerRepository(AppDbContext context) : BaseRepository<CustomerEntity>(context)
 {
-    private readonly AppDbContext _context;
-    public CustomerRepository(AppDbContext context) : base(context)
-    {
-        _context = context;
-    }
 }

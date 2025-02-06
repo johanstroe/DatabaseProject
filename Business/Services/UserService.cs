@@ -8,9 +8,9 @@ using System.Diagnostics;
 
 namespace Business.Services;
 
-public class UserService(UserRepository userRepository)
+public class UserService(EmployeeRepository userRepository)
 {
-    private readonly UserRepository _userRepository = userRepository;
+    private readonly EmployeeRepository _userRepository = userRepository;
 
 
 
