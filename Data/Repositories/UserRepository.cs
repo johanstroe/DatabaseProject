@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    public class UserRepository : BaseRepository<UserEntity>
+    public class UserRepository : BaseRepository<EmployeeEntity>
     {
         public UserRepository(AppDbContext context) : base(context)
         {

@@ -9,9 +9,9 @@ namespace Business.Factories;
 
 public static class CustomerFactory
 {
-    public static UserEntity Create (UserRegistrationForm form)
+    public static EmployeeEntity Create (UserRegistrationForm form)
     {
-        return new UserEntity
+        return new EmployeeEntity
         {
             FirstName = form.FirstName,
             LastName = form.LastName,

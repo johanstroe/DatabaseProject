@@ -1,10 +1,6 @@
 ﻿using Business.Dtos;
 using Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Business.Factories
 {
@@ -15,7 +11,7 @@ namespace Business.Factories
             return new ProjectEntity
             {
                 ProjectName = projectName,
-                ResponsibleUserId = id,
+                ProjectId = id,
 
             };
         }
@@ -25,9 +21,7 @@ namespace Business.Factories
             return new ProjectEntity
             {
                 ProjectName = dto.ProjectName,
-                Budget = dto.Budget,
-                Notes = dto.Notes,
-                ResponsibleUserId = dto.UserId,
+                ProjectId = dto.UserId,
             };
         }
     }

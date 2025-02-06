@@ -6,12 +6,12 @@ namespace Business.Interfaces;
 
 public interface IUserRepository 
 {
-    Task<UserEntity> CreateUserAsync(UserRegistrationForm registrationForm);
-    Task<UserEntity> GetUsersAsync();
-    Task<UserEntity> GetUserByIdAsync(int id);
+    Task<EmployeeEntity> CreateUserAsync(UserRegistrationForm registrationForm);
+    Task<EmployeeEntity> GetUsersAsync();
+    Task<EmployeeEntity> GetUserByIdAsync(int id);
 
-    Task<UserEntity> GetUserByEmailAsync(string email);
-    Task<UserEntity> UpdateUserAsync(int id, UserUpdateForm updateForm);
-    Task<UserEntity> DeleteUserAsync(int id);
+    Task<EmployeeEntity> GetUserByEmailAsync(string email);
+    Task<EmployeeEntity> UpdateUserAsync(int id, UserUpdateForm updateForm);
+    Task<EmployeeEntity> DeleteUserAsync(int id);
     
 }

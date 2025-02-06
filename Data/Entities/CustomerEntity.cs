@@ -9,29 +9,9 @@ public class CustomerEntity
 {
     [Key]
     public int Id { get; set; }
+    [Required]
+    [Column(TypeName = "nvarchar (50)")]
+    public string Name { get; set; } = null!;
 
-    public string Title { get; set; } = null!;
-
-    public string? Description { get; set; } = null!;
-
-    [Column(TypeName = "date")]
-    public DateTime StartDate { get; set; }
-
-    [Column(TypeName = "date")]
-    public DateTime EndDate { get; set; }
-
-    public int CustomerId { get; set; }
-    public CustomerEntity Customer { get; set; } = null!;
-
-    public int StatusId { get; set; }
-    public StatusType Status { get; set; } = null!;
-
-    public int UserId { get; set; }
-    public UserEntity User { get; set; } = null!;
-
-    public int ProductId { get; set; }
-    public ProductEntity Product { get; set; } = null!;
-
-
-
+    public ICollection<ProjectEntity> Projects { get; set; } = null!;
 }

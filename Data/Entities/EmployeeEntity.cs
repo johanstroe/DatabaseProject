@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Data.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
-public class UserEntity
+public class EmployeeEntity
 {
     [Key]
     public int Id { get; set; }
@@ -25,4 +25,5 @@ public class UserEntity
     [Column(TypeName = "varchar (150)")]
     public string Email { get; set; } = null!;
 
+    public ICollection<ProjectEntity> Projects { get; set; } = null!;
 }

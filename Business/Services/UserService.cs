@@ -54,7 +54,7 @@ public class UserService(UserRepository userRepository)
 
         try
         {
-            var userEntity = new UserEntity
+            var userEntity = new EmployeeEntity
             {
                 FirstName = registrationForm.FirstName,
                 LastName = registrationForm.LastName,
@@ -77,7 +77,7 @@ public class UserService(UserRepository userRepository)
         try
         {
             var users = await _userRepository.GetAllAsync();
-            return Result<IEnumerable<UserEntity>>.Ok(users);
+            return Result<IEnumerable<EmployeeEntity>>.Ok(users);
         }
         catch (Exception ex)
         {
@@ -91,7 +91,7 @@ public class UserService(UserRepository userRepository)
         try
         {
             var user = await _userRepository.GetOneAsync(x => x.Id == id);
-            return user != null ? Result<UserEntity>.Ok(user) : Result.NotFound("User not found.");
+            return user != null ? Result<EmployeeEntity>.Ok(user) : Result.NotFound("User not found.");
         }
         catch (Exception ex)
         {
@@ -105,7 +105,7 @@ public class UserService(UserRepository userRepository)
         try
         {
             var user = await _userRepository.GetOneAsync(x => x.Email == email);
-            return user != null ? Result<UserEntity>.Ok(user) : Result.NotFound("User not found.");
+            return user != null ? Result<EmployeeEntity>.Ok(user) : Result.NotFound("User not found.");
         }
         catch (Exception ex)
         {
