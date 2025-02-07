@@ -11,7 +11,7 @@ namespace Data.Entities;
 public class EmployeeEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int UserId { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar (50)")]

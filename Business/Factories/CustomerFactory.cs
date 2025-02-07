@@ -9,14 +9,14 @@ namespace Business.Factories;
 
 public static class CustomerFactory
 {
-    public static EmployeeEntity Create (UserRegistrationForm form)
+    public static CustomerEntity Create (string firstName, string lastName, string email)
     {
-        return new EmployeeEntity
+        return new CustomerEntity
         {
-            FirstName = form.FirstName,
-            LastName = form.LastName,
-            Email = form.Email,
-           
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            
         };
     }
 }

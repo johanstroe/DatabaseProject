@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Factories
 {
-    public static class UserFactory
+    public static class EmployeeFactory
     {
         public static EmployeeEntity Create (string firstName, string lastName, string email)
         {

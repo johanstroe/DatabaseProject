@@ -11,17 +11,10 @@ using System.Diagnostics;
 
 namespace Business.Services;
 
-public class ProjectService
+public class ProjectService(ProjectRepository projectRepository, UserService userService)
 {
-    private readonly ProjectRepository _projectRepository;
-    private readonly UserService _userService;
-
-    public ProjectService(ProjectRepository projectRepository, UserService userService)
-    {
-        _projectRepository = projectRepository;
-        _userService = userService;
-        
-    }
+    private readonly ProjectRepository _projectRepository = projectRepository;
+    private readonly UserService _userService = userService;
 
     public async Task<bool> CreateProjectAsync(CreateProjectDto dto)
     {
@@ -49,26 +42,37 @@ public class ProjectService
         return await _projectRepository.GetAllAsync() ?? [];
     }
 
-    public async Task<IEnumerable<ProjectEntity>> GetOneAsync(string getOne)
+    public async Task<ProjectEntity?> GetOneAsync(int projectId)
     {
-        return await _projectRepository.GetOneAsync(p => p.getOne == getOne) ?? [];
+        return await _projectRepository.GetOneAsync(p => p.ProjectId == projectId);
         
     }
 
     public async Task<bool> UpdateAsync(ProjectEntity project)
     {
-        _context.Projects.Update(project);
-        return await _context.SaveChangesAsync() > 0;
-    }
+        if (project == null)
+            return false;
+        
+        var updatedProject = await _projectRepository.UpdateAsync(p => p.ProjectId == project.ProjectId, project);
+
+        return updatedProject != null!;
+    }   
     public async Task<bool> DeleteAsync(int projectId) 
     { 
-    
+     if (projectId <= 0)
+            return false;
+
+     return await _projectRepository.DeleteAsync(p => p.ProjectId == projectId);
+
     }
 
 
     public async Task<ProjectEntity?> GetByIdAsync(int projectId)
     {
-       
+        if (projectId <= 0)
+            return null;
+
+        return await _projectRepository.GetOneAsync(p => p.ProjectId == projectId);
     }
 
     
