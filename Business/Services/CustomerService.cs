@@ -41,28 +41,28 @@ public class CustomerService(CustomerRepository customerRepository)
 
     public async Task<bool> UpdateAsync(CustomerEntity customer)
     {
-        if (employee == null)
+        if (customer == null)
             return false;
 
-        var updatedProject = await _employeeRepository.UpdateAsync(p => p.UserId == employee.UserId, employee);
+        var updatedProject = await _customerRepository.UpdateAsync(p => p.CustomerId == customer.CustomerId, customer);
 
         return updatedProject != null!;
     }
-    public async Task<bool> DeleteAsync(int userId)
+    public async Task<bool> DeleteAsync(int customerId)
     {
-        if (userId <= 0)
+        if (customerId <= 0)
             return false;
 
-        return await _employeeRepository.DeleteAsync(p => p.UserId == userId);
+        return await _customerRepository.DeleteAsync(p => p.CustomerId == customerId);
 
     }
 
 
-    public async Task<EmployeeEntity?> GetByIdAsync(int userId)
+    public async Task<CustomerEntity?> GetByIdAsync(int customerId)
     {
-        if (userId <= 0)
+        if (customerId <= 0)
             return null;
 
-        return await _employeeRepository.GetOneAsync(p => p.UserId == userId);
+        return await _customerRepository.GetOneAsync(p => p.CustomerId == customerId);
     }
 }
