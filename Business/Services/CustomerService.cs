@@ -7,7 +7,7 @@ using Data.Repositories;
 
 namespace Business.Services;
 
-public class CustomerService(CustomerRepository customerRepository)
+public class CustomerService(CustomerRepository customerRepository) : ICustomerService
 {
     private readonly CustomerRepository _customerRepository = customerRepository;
 

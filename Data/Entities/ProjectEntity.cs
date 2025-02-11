@@ -12,9 +12,7 @@ public class ProjectEntity
     [Required, MaxLength(50)]
     public string ProjectName { get; set; } = null!;
 
-    [Required]
-    [Column(TypeName = "nvarchar (20)")]
-    public string ProjectStatus { get; set; } = "Pågående"; // Pågående, Avslutat, Ej påbörjat
+   
 
     [Column(TypeName = "date")]
     public DateTime StartDate { get; set; } = DateTime.Now;
@@ -31,5 +29,7 @@ public class ProjectEntity
     public int ProductId { get; set; }
     public ProductEntity Product { get; set; } = null!;
 
-    
+    public int StatusId { get; set; }
+    public ProjectStatusEntity Status { get; set; } = null!;
+
 }

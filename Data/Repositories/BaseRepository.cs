@@ -37,13 +37,33 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         try
         {
+            Debug.WriteLine($"📌 Försöker lägga till entitet i databasen: {entity}");
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            int rowsAffected = await _context.SaveChangesAsync();
+
+            if (rowsAffected > 0)
+            {
+                Debug.WriteLine($"✅ {rowsAffected} rad(er) sparades i databasen!");
+                return entity;
+            }
+            else
+            {
+                Debug.WriteLine($"❌ Inga rader sparades i databasen.");
+                return null!;
+            }
+           
+        }
+        catch (DbUpdateException dbEx)
+        {
+            Debug.WriteLine($"❌ DbUpdateException: {dbEx.Message}");
+            if (dbEx.InnerException != null)
+                Debug.WriteLine($"🔍 Inner Exception: {dbEx.InnerException.Message}");
+            
+            return null!;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
+            Debug.WriteLine($"❌ Exception vid CreateAsync: {ex.Message}");
             return null!;
         }
     }

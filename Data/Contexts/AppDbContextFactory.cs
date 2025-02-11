@@ -10,7 +10,7 @@ namespace Data.Contexts;
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Databaseproject2025\\DatabaseProject\\Data\\Databases\\local_database.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True");
+            optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30");
 
         return new AppDbContext(optionsBuilder.Options);
         }

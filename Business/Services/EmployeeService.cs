@@ -7,7 +7,7 @@ using Data.Repositories;
 
 namespace Business.Services;
 
-public class UserService(EmployeeRepository employeeRepository)
+public class EmployeeService(EmployeeRepository employeeRepository) : IUserService
 {
     private readonly EmployeeRepository _employeeRepository = employeeRepository;
 
@@ -33,9 +33,9 @@ public class UserService(EmployeeRepository employeeRepository)
         return await _employeeRepository.GetAllAsync() ?? [];
     }
 
-    public async Task<EmployeeEntity?> GetOneAsync(int userId)
+    public async Task<EmployeeEntity?> GetOneAsync(int employeeId)
     {
-        return await _employeeRepository.GetOneAsync(p => p.UserId == userId);
+        return await _employeeRepository.GetOneAsync(p => p.Id == employeeId);
 
     }
 
@@ -44,25 +44,25 @@ public class UserService(EmployeeRepository employeeRepository)
         if (employee == null)
             return false;
 
-        var updatedProject = await _employeeRepository.UpdateAsync(p => p.UserId == employee.UserId, employee);
+        var updatedProject = await _employeeRepository.UpdateAsync(p => p.Id == employee.Id, employee);
 
         return updatedProject != null!;
     }
-    public async Task<bool> DeleteAsync(int userId)
+    public async Task<bool> DeleteAsync(int employeeId)
     {
-        if (userId <= 0)
+        if (employeeId <= 0)
             return false;
 
-        return await _employeeRepository.DeleteAsync(p => p.UserId == userId);
+        return await _employeeRepository.DeleteAsync(p => p.Id == employeeId);
 
     }
 
 
-    public async Task<EM?> GetByIdAsync(int userId)
+    public async Task<EmployeeEntity?> GetByIdAsync(int employeeId)
     {
-        if (userId <= 0)
+        if (employeeId <= 0)
             return null;
 
-        return await _employeeRepository.GetOneAsync(p => p.UserId == userId);
+        return await _employeeRepository.GetOneAsync(p => p.Id == employeeId);
     }
 }
