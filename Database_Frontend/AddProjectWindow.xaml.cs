@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using Data.Entities;
+using Business.Dtos;
 using Business.Interfaces;
+using Data.Entities;
 using Database_Frontend.ViewModels;
 
 namespace Database_Frontend.Views
@@ -9,22 +10,29 @@ namespace Database_Frontend.Views
     public partial class AddProjectWindow : Window
     {
         private readonly IStatusService _statusService;
+        private readonly IProjectService _projectService;
 
-        public ProjectEntity NewProject { get; private set; }
-
+        public CreateProjectDto NewProject { get; private set; }
         public ObservableCollection<ProjectStatusEntity> StatusOptions { get; private set; }
+        public ObservableCollection<string> ProjectTypes { get; private set; }
 
-        public AddProjectWindow(ProjectViewModel viewModel, IStatusService statusService)
+        public AddProjectWindow(IStatusService statusService, IProjectService projectService)
         {
             InitializeComponent();
             _statusService = statusService;
+            _projectService = projectService;
 
-            NewProject = new ProjectEntity { StartDate = DateTime.Now };
+            NewProject = new CreateProjectDto();
             StatusOptions = new ObservableCollection<ProjectStatusEntity>();
+            ProjectTypes = new ObservableCollection<string>
+            {
+                "Customer",
+                "Employee",
+                "Product"
+            };
 
             LoadStatusOptions();
 
-            // Sätt rätt DataContext för att säkerställa att XAML kan binda till rätt objekt
             DataContext = this;
         }
 
@@ -40,14 +48,9 @@ namespace Database_Frontend.Views
                     StatusOptions.Add(status);
                 }
             }
-
-            if (StatusOptions.Count > 0)
-            {
-                MessageBox.Show($"Dropdown innehåller: {string.Join(", ", StatusOptions.Select(s => s.StatusName))}");
-            }
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NewProject.ProjectName))
             {
@@ -55,16 +58,37 @@ namespace Database_Frontend.Views
                 return;
             }
 
+
             if (NewProject.StatusId == 0)
             {
                 MessageBox.Show("Du måste välja en status!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            try
+            {
+                var projectDto = new CreateProjectDto
+                {
+                    ProjectName = NewProject.ProjectName,
+                    CreatedDate = NewProject.CreatedDate,
+                    EndDate = NewProject.EndDate,
+                    ProductId = NewProject.ProductId,
+                    StatusId = NewProject.StatusId,
+                    EmployeeId = NewProject.EmployeeId,
+                    CustomerId = NewProject.CustomerId
+                };
 
-            DialogResult = true;
-            Close();
+                await _projectService.CreateProjectAsync(projectDto);
+                MessageBox.Show("Projekt sparat i databasen!", "Klart", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ett fel uppstod: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
-
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {

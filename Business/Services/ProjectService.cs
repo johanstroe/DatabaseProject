@@ -3,11 +3,9 @@
 using Business.Dtos;
 using Business.Factories;
 using Business.Interfaces;
-using Data.Contexts;
 using Data.Entities;
 using Data.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+
 
 namespace Business.Services;
 
@@ -26,17 +24,19 @@ public class ProjectService(ProjectRepository projectRepository, EmployeeService
         if (project)
             return false;
 
-       
-
         var result = await _projectRepository.CreateAsync(ProjectFactory.Create(dto));
         return result != null;
     }
 
 
 
-    public async Task<IEnumerable<ProjectEntity>> GetAllAsync()
+    public async Task<IEnumerable<ProjectsDto>> GetAllAsync()
     {
-        return await _projectRepository.GetAllAsync() ?? [];
+        var projects = await _projectRepository.GetAllAsync();
+        return projects.Select(ProjectFactory.Read);
+
+
+        //return await _projectRepository.GetAllAsync() ?? [];
     }
 
     public async Task<ProjectEntity?> GetOneAsync(int projectId)

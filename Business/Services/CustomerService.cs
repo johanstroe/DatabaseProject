@@ -16,12 +16,12 @@ public class CustomerService(CustomerRepository customerRepository) : ICustomerS
         if (dto == null)
             return false;
 
-        var existingUser = await _customerRepository.ExistsAsync(x => x.FirstName == dto.FirstName);
+        var existingUser = await _customerRepository.ExistsAsync(x => x.Name == dto.Name);
 
         if (existingUser)
             return false;
 
-        var newUser = CustomerFactory.Create(dto.FirstName, dto.LastName, dto.Email);
+        var newUser = CustomerFactory.Create(dto.Name);
         var result = await _customerRepository.CreateAsync(newUser);
         return result != null;
     }

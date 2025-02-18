@@ -16,12 +16,12 @@ public class EmployeeService(EmployeeRepository employeeRepository) : IUserServi
         if (dto == null)
             return false;
 
-        var existingUser = await _employeeRepository.ExistsAsync(x => x.Email == dto.Email);
+        var existingUser = await _employeeRepository.ExistsAsync(x => x.FirstName == dto.Name);
 
         if (existingUser)
             return false;
 
-        var newUser = EmployeeFactory.Create(dto.FirstName, dto.LastName, dto.Email);
+        var newUser = EmployeeFactory.Create(dto.Name);
         var result = await _employeeRepository.CreateAsync(newUser);
         return result != null;
     }

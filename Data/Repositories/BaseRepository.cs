@@ -7,13 +7,13 @@ namespace Data.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class 
 {
-    private readonly AppDbContext _context;
-    private readonly DbSet<TEntity> _dbSet;
+    protected readonly AppDbContext _context;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public BaseRepository(AppDbContext context)
     {
         _context = context;
-        _dbSet = _context.Set<TEntity>();
+        _dbSet = context.Set<TEntity>();
     }
 
     public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression)
@@ -37,33 +37,25 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         try
         {
-            Debug.WriteLine($"📌 Försöker lägga till entitet i databasen: {entity}");
+            
             await _dbSet.AddAsync(entity);
             int rowsAffected = await _context.SaveChangesAsync();
 
             if (rowsAffected > 0)
             {
-                Debug.WriteLine($"✅ {rowsAffected} rad(er) sparades i databasen!");
+                
                 return entity;
             }
             else
             {
-                Debug.WriteLine($"❌ Inga rader sparades i databasen.");
+              
                 return null!;
             }
-           
-        }
-        catch (DbUpdateException dbEx)
-        {
-            Debug.WriteLine($"❌ DbUpdateException: {dbEx.Message}");
-            if (dbEx.InnerException != null)
-                Debug.WriteLine($"🔍 Inner Exception: {dbEx.InnerException.Message}");
-            
-            return null!;
+      
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ Exception vid CreateAsync: {ex.Message}");
+         
             return null!;
         }
     }
@@ -84,15 +76,16 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
     }
 
-    public virtual async Task<IEnumerable<TEntity>?> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         try
         {
             var entities = await _dbSet.ToListAsync();
             return entities;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Debug.WriteLine($"{ex.Message}");
             return [];
         }
     }

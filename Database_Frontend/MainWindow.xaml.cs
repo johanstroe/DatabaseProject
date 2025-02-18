@@ -1,27 +1,43 @@
-﻿using Business.Interfaces;
-using Business.Services;
-using Data.Entities;
-using Data.Repositories;
-using Database_Frontend.ViewModels;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-namespace Database_Frontend;
+using Business.Dtos;
+using Business.Interfaces;
+using Database_Frontend.Views;
 
-
-public partial class MainWindow : Window
+namespace Database_Frontend
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-    }
+        private readonly IStatusService _statusService;
+        private readonly IProjectService _projectService;
 
-    public MainWindow(ProjectViewModel viewModel) 
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+        private ObservableCollection<ProjectsDto> Projects { get; set; } = new();
+        public MainWindow(IStatusService statusService, IProjectService projectService)
+        {
+            InitializeComponent();
+            
+            _statusService = statusService;
+            _projectService = projectService;
 
-    private void ProjectDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-    {
+            LoadProjects();
+            DataContext = this;
+        }
 
+        private void ProjectDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void OpenAddProjectWindow_Click(object sender, RoutedEventArgs e)
+        {
+            var addProjectWindow = new AddProjectWindow(_statusService, _projectService);
+            addProjectWindow.ShowDialog();
+        }
+
+        private async void LoadProjects()
+        {
+            var projectsFromDb = await _projectService.GetAllAsync();
+            Projects = new ObservableCollection<ProjectsDto>(projectsFromDb);
+        }
     }
 }

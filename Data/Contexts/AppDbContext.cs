@@ -19,10 +19,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ProjectEntity>()
-         .HasIndex(p => p.ProjectNumber)
-         .IsUnique();
-
+       
         modelBuilder.Entity<ProjectEntity>()
             .HasOne(p => p.Customer)
             .WithMany(c => c.Projects)
@@ -37,5 +34,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(p => p.Employee)
             .WithMany(c => c.Projects)
             .HasForeignKey(p => p.EmployeeId);
+
+        modelBuilder.Entity<ProjectEntity>()
+            .HasOne(p => p.Status)
+            .WithMany(p => p.Projects)
+            .HasForeignKey(p => p.StatusId);
     }
 }

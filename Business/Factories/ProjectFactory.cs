@@ -22,10 +22,11 @@ public static class ProjectFactory
         {
             ProjectName = dto.ProjectName,
             StartDate = dto.CreatedDate,
+            EndDate = dto.EndDate,
+            ProductId = dto.ProductId,
             StatusId = dto.StatusId,
             EmployeeId = dto.EmployeeId,
             CustomerId = dto.CustomerId,
-            
             
         };
     }
@@ -39,6 +40,22 @@ public static class ProjectFactory
             StatusId = entity.StatusId,
             EmployeeId = entity.EmployeeId
 
+        };
+    }
+
+    public static ProjectsDto Read (ProjectEntity entity)
+    {
+        return new ProjectsDto
+        {
+            ProjectId = entity.ProjectId,
+            ProjectName = entity.ProjectName,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            StatusName = entity.Status.StatusName,
+            ProductName = entity.Product.ProductName,
+            ProductPrice = entity.Product.Price,
+            EmployeeEmail = entity.Employee.Email,
+            
         };
     }
 

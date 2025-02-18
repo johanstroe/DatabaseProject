@@ -30,7 +30,7 @@ namespace Database_Frontend
         {
 
             services.AddDbContext<AppDbContext>(options =>
-         options.UseSqlServer(@"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
+            options.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
 
             services.AddScoped<IBaseRepository<ProjectEntity>, BaseRepository<ProjectEntity>>();
             services.AddScoped<IBaseRepository<CustomerEntity>, BaseRepository<CustomerEntity>>();
@@ -43,9 +43,7 @@ namespace Database_Frontend
             services.AddScoped<IStatusService, StatusService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<EmployeeService, EmployeeService>();
-
             services.AddScoped<ProjectViewModel>();
-
             services.AddSingleton<MainWindow>();
         }
     }
