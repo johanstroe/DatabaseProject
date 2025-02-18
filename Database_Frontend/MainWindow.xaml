@@ -41,9 +41,11 @@
                           VerticalGridLinesBrush="#CFD8DC" SelectionChanged="ProjectDataGrid_SelectionChanged">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Projekt" Binding="{Binding ProjectName}" Width="*"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding ProjectStatus}" Width="200"/>
+                        <DataGridTextColumn Header="Projekt" Binding="{Binding ProjectName}" Width="150"/>
+                        <DataGridTextColumn Header="ProjektNummer" Binding="{Binding ProjectNumber}" Width="150"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status.StatusName}" Width="150"/>
                         <DataGridTextColumn Header="Startdatum" Binding="{Binding StartDate}" Width="150"/>
+                        <DataGridTextColumn Header="Product" Binding="{Binding Product}" Width="150" />
                     </DataGrid.Columns>
                 </DataGrid>
 

@@ -1,31 +1,35 @@
 ﻿<Window x:Class="Database_Frontend.Views.AddProjectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Lägg till projekt" Height="300" Width="400"
+        Title="Lägg till projekt" Height="250" Width="400"
         WindowStartupLocation="CenterScreen">
 
-    <Grid Margin="20">
+    <Grid Margin="10">
         <StackPanel Orientation="Vertical" Margin="10">
+
             <TextBlock Text="Projektnamn:" FontSize="14"/>
-            <TextBox Text="{Binding NewProject.ProjectName, Mode=TwoWay}" 
+            <TextBox Text="{Binding NewProject.ProjectName, Mode=TwoWay}"
                      Height="30" Padding="5"
                      VerticalContentAlignment="Center"/>
 
             <TextBlock Text="Status:" FontSize="14"/>
             <ComboBox ItemsSource="{Binding StatusOptions}" 
-                      SelectedItem="{Binding NewProject.ProjectStatus, Mode=TwoWay}"
-                      Height="30" Padding="5"
-                      VerticalContentAlignment="Center"/>
+             DisplayMemberPath="StatusName"
+            SelectedValuePath="Id"
+            SelectedValue="{Binding NewProject.StatusId, Mode=TwoWay}"
+            Height="30" Padding="5"
+            VerticalContentAlignment="Center"/>
+
 
             <TextBlock Text="Startdatum:" FontSize="14"/>
             <DatePicker SelectedDate="{Binding NewProject.StartDate, Mode=TwoWay}"
-                        Height="30" Padding="5"
-                        VerticalContentAlignment="Center"/>
+                        Height="30" Padding="5"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0,0,0">
                 <Button Content="Avbryt" Width="80" Click="Cancel_Click"/>
                 <Button Content="Spara" Width="80" Margin="10,0,0,0" Click="Save_Click"/>
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>

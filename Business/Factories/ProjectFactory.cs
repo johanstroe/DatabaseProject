@@ -34,7 +34,10 @@ public static class ProjectFactory
         return new CreateProjectDto
         {
             ProjectName = entity.ProjectName,
-           
+            CreatedDate = entity.StartDate,
+            CustomerId = entity.CustomerId,
+            StatusId = entity.StatusId,
+            EmployeeId = entity.EmployeeId
 
         };
     }

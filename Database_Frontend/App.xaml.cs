@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using Database_Frontend.ViewModels;
 using Business.Services;
 using Data.Contexts;
 using Data.Repositories;
 using Data.Entities;
 using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Database_Frontend.ViewModels;
+
 
 namespace Database_Frontend
 {
@@ -29,16 +30,17 @@ namespace Database_Frontend
         {
 
             services.AddDbContext<AppDbContext>(options =>
-         options.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Johaa\OneDrive\Skrivbord\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
+         options.UseSqlServer(@"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
 
             services.AddScoped<IBaseRepository<ProjectEntity>, BaseRepository<ProjectEntity>>();
             services.AddScoped<IBaseRepository<CustomerEntity>, BaseRepository<CustomerEntity>>();
             services.AddScoped<IBaseRepository<EmployeeEntity>, BaseRepository<EmployeeEntity>>();
             services.AddScoped<IBaseRepository<ProductEntity>, BaseRepository<ProductEntity>>();
-
+            services.AddScoped<IBaseRepository<ProjectStatusEntity>, BaseRepository<ProjectStatusEntity>>();
             services.AddScoped<ProjectRepository>();
             services.AddScoped<EmployeeRepository>();
-
+            services.AddScoped<ProjectStatusRepository>();
+            services.AddScoped<IStatusService, StatusService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<EmployeeService, EmployeeService>();
 

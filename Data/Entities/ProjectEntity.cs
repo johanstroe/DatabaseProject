@@ -12,8 +12,6 @@ public class ProjectEntity
     [Required, MaxLength(50)]
     public string ProjectName { get; set; } = null!;
 
-   
-
     [Column(TypeName = "date")]
     public DateTime StartDate { get; set; } = DateTime.Now;
 
@@ -23,8 +21,11 @@ public class ProjectEntity
     public int CustomerId { get; set; }
     public CustomerEntity Customer { get; set; } = null!;
 
+    public int ProjectNumber { get; set; }
+
     public int EmployeeId { get; set; }
     public EmployeeEntity Employee { get; set; } = null!;
+
 
     public int ProductId { get; set; }
     public ProductEntity Product { get; set; } = null!;

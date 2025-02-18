@@ -14,7 +14,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    public MainWindow(ProjectViewModel viewModel) // 👈 Dependency Injection via App.xaml.cs
+    public MainWindow(ProjectViewModel viewModel) 
     {
         InitializeComponent();
         DataContext = viewModel;

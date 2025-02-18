@@ -19,7 +19,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      
+        modelBuilder.Entity<ProjectEntity>()
+         .HasIndex(p => p.ProjectNumber)
+         .IsUnique();
 
         modelBuilder.Entity<ProjectEntity>()
             .HasOne(p => p.Customer)
