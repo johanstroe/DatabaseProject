@@ -7,7 +7,7 @@ using Data.Repositories;
 using Data.Entities;
 using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Database_Frontend.ViewModels;
+
 
 
 namespace Database_Frontend
@@ -43,7 +43,6 @@ namespace Database_Frontend
             services.AddScoped<IStatusService, StatusService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<EmployeeService, EmployeeService>();
-            services.AddScoped<ProjectViewModel>();
             services.AddSingleton<MainWindow>();
         }
     }

@@ -1,22 +1,29 @@
 ﻿<Window x:Class="Database_Frontend.EditProjectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Redigera Projekt" Height="300" Width="400">
+        Title="Redigera Projekt" Height="300" Width="400"
+        WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
         <StackPanel>
-            <TextBlock Text="Projekt Namn:"/>
-            <TextBox Text="{Binding SelectedProject.ProjectName, Mode=TwoWay}" Margin="0,5,0,10"/>
+            <TextBlock Text="Projekt Namn:" FontSize="14"/>
+            <TextBox Text="{Binding Project.ProjectName, Mode=TwoWay}" 
+                     Margin="0,5,0,10" Padding="5"/>
 
-            <TextBlock Text="Status:"/>
-            <TextBox Text="{Binding SelectedProject.ProjectStatus, Mode=TwoWay}" Margin="0,5,0,10"/>
+            <TextBlock Text="Status:" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding StatusOptions}" 
+                      DisplayMemberPath="StatusName"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding Project.StatusId, Mode=TwoWay}"
+                      Margin="0,5,0,10" Padding="5"/>
 
-            <TextBlock Text="Startdatum:"/>
-            <DatePicker SelectedDate="{Binding SelectedProject.StartDate, Mode=TwoWay}" Margin="0,5,0,10"/>
+            <TextBlock Text="Startdatum:" FontSize="14"/>
+            <DatePicker SelectedDate="{Binding Project.StartDate, Mode=TwoWay}" 
+                        Margin="0,5,0,10" Padding="5"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Spara" Command="{Binding SaveProjectCommand}" Margin="5"/>
-                <Button Content="Avbryt" Click="CloseWindow" Margin="5"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0,0,0">
+                <Button Content="Spara" Click="SaveChanges_Click" Width="80" Margin="5"/>
+                <Button Content="Avbryt" Click="CloseWindow_Click" Width="80" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

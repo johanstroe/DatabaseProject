@@ -3,7 +3,7 @@ using System.Windows;
 using Business.Dtos;
 using Business.Interfaces;
 using Data.Entities;
-using Database_Frontend.ViewModels;
+
 
 namespace Database_Frontend.Views
 {
@@ -21,9 +21,9 @@ namespace Database_Frontend.Views
             InitializeComponent();
             _statusService = statusService;
             _projectService = projectService;
-
+ 
             NewProject = new CreateProjectDto();
-            StatusOptions = new ObservableCollection<ProjectStatusEntity>();
+            StatusOptions = [];
             ProjectTypes = new ObservableCollection<string>
             {
                 "Customer",
@@ -77,7 +77,7 @@ namespace Database_Frontend.Views
                     CustomerId = NewProject.CustomerId
                 };
 
-                await _projectService.CreateProjectAsync(projectDto);
+                await _projectService.CreateProjectAsync(NewProject);
                 MessageBox.Show("Projekt sparat i databasen!", "Klart", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 DialogResult = true;
@@ -94,6 +94,11 @@ namespace Database_Frontend.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

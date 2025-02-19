@@ -55,7 +55,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         catch (Exception ex)
         {
-         
+            Debug.WriteLine($"Fel vid skapande av entitet: {ex.Message}");
             return null!;
         }
     }

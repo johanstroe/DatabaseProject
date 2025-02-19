@@ -39,11 +39,11 @@
             Height="30" Padding="5"
             VerticalContentAlignment="Center"/>
 
-            <TextBlock Text="ProjektAnsvarig:" FontSize="14"/>
+            <!--<TextBlock Text="Anställd:" FontSize="14"/>
             <ComboBox ItemsSource="{Binding EmployeeId}"
             SelectedItem="{Binding NewProject.ProjectType, Mode=TwoWay}"
             Height="30" Padding="5"
-            VerticalContentAlignment="Center"/>
+            VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>-->
 
 
             <TextBlock Text="Startdatum:" FontSize="14"/>
