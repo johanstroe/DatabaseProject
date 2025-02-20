@@ -42,9 +42,9 @@ namespace Database_Frontend
 
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadProjects();
+            await LoadProjects();
         }
 
         private void ProjectDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -53,7 +53,7 @@ namespace Database_Frontend
         }
 
 
-        private void OpenAddProjectWindow_Click(object sender, RoutedEventArgs e)
+        private async void OpenAddProjectWindow_Click(object sender, RoutedEventArgs e)
         {
             var newProject = new ProjectEntity
             {
@@ -63,12 +63,12 @@ namespace Database_Frontend
             var addProjectWindow = new AddProjectWindow(_statusService, _projectService, _employeeService, _customerService, _productService);
             if (addProjectWindow.ShowDialog() == true)
             {
-                LoadProjects(); // Uppdatera listan efter att ett projekt lagts till
+              await LoadProjects(); // Uppdatera listan efter att ett projekt lagts till
             }
         }
 
 
-        private void OpenEditProjectWindow_Click(object sender, RoutedEventArgs e)
+        private async void OpenEditProjectWindow_Click(object sender, RoutedEventArgs e)
         {
             if (ProjectDataGrid.SelectedItem is ProjectsDto selectedProject)
             {
@@ -82,7 +82,7 @@ namespace Database_Frontend
 
                 if (result == true)
                 {
-                    LoadProjects();
+                   await LoadProjects();
                 }
             }
             else
@@ -92,7 +92,7 @@ namespace Database_Frontend
         }
 
 
-        private async void LoadProjects()
+        private async Task LoadProjects()
         {
             Projects.Clear();
             var projectsFromDb = await _projectService.GetAllAsync();
@@ -106,9 +106,9 @@ namespace Database_Frontend
             //Projects = new ObservableCollection<ProjectsDto>(projectsFromDb);
         }
 
-        private void RefreshProjects_Click(object sender, RoutedEventArgs e)
+        private async void RefreshProjects_Click(object sender, RoutedEventArgs e)
         {
-            LoadProjects();
+           await LoadProjects();
             MessageBox.Show("Sidan har uppdaterats!", "Uppdaterad", MessageBoxButton.OK, MessageBoxImage.None);
         }
 
@@ -116,6 +116,8 @@ namespace Database_Frontend
         {
             if (ProjectDataGrid.SelectedItem is ProjectsDto selectedProject)
             {
+                Debug.WriteLine($"Valt projekt: {selectedProject.ProjectName}, ProjectId = {selectedProject.ProjectId}");
+
                 var result = MessageBox.Show($"Är du säker på att du vill ta bort projektet '{selectedProject.ProjectName}'?",
                                              "Bekräfta borttagning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
@@ -128,7 +130,8 @@ namespace Database_Frontend
                         if (success)
                         {
                             MessageBox.Show("Projektet har tagits bort!", "Klart", MessageBoxButton.OK);
-                            LoadProjects(); 
+                            
+                            await LoadProjects(); 
                         }
                         else
                         {

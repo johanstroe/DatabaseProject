@@ -117,7 +117,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         try
         {
-            var entity = _dbSet.FirstOrDefaultAsync(expression);
+            var entity = await _dbSet.FirstOrDefaultAsync(expression);
             if (entity != null)
             {
                 _context.Remove(entity);

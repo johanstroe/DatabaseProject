@@ -85,6 +85,7 @@ public static class ProjectFactory
             ProjectId = dto.ProjectId,
             ProjectName = dto.ProjectName,
             CreatedDate = dto.StartDate,
+            EndDate = dto.EndDate ?? DateTime.MinValue,
             ProductId = dto.ProductId,
             StatusId = dto.StatusId,
             EmployeeId = dto.EmployeeId,
