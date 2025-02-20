@@ -10,40 +10,50 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace Database_Frontend
+namespace Database_Frontend;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public static IServiceProvider ServiceProvider { get; private set; } = null!;
+
+    protected override void OnStartup(StartupEventArgs e)
     {
-        public static IServiceProvider ServiceProvider { get; private set; } = null!;
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+        ServiceProvider = serviceCollection.BuildServiceProvider();
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            ServiceProvider = serviceCollection.BuildServiceProvider();
+        var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+    }
 
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-        }
+    private void ConfigureServices(IServiceCollection services)
+    {
 
-        private void ConfigureServices(IServiceCollection services)
-        {
+        services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
 
-            services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Johaa\\OneDrive\\Skrivbord\\local_db_v2.mdf;Integrated Security=True;Connect Timeout=30"));
+        //BaseRepository
+        services.AddScoped<IBaseRepository<ProjectEntity>, BaseRepository<ProjectEntity>>();
+        services.AddScoped<IBaseRepository<CustomerEntity>, BaseRepository<CustomerEntity>>();
+        services.AddScoped<IBaseRepository<EmployeeEntity>, BaseRepository<EmployeeEntity>>();
+        services.AddScoped<IBaseRepository<ProductEntity>, BaseRepository<ProductEntity>>();
+        services.AddScoped<IBaseRepository<ProjectStatusEntity>, BaseRepository<ProjectStatusEntity>>();
+        
+        //Repositories
+        services.AddScoped<ProjectRepository>();
+        services.AddScoped<EmployeeRepository>();
+        services.AddScoped<ProductRepository>();
+        services.AddScoped<CustomerRepository>();
+        services.AddScoped<ProjectStatusRepository>();
 
-            services.AddScoped<IBaseRepository<ProjectEntity>, BaseRepository<ProjectEntity>>();
-            services.AddScoped<IBaseRepository<CustomerEntity>, BaseRepository<CustomerEntity>>();
-            services.AddScoped<IBaseRepository<EmployeeEntity>, BaseRepository<EmployeeEntity>>();
-            services.AddScoped<IBaseRepository<ProductEntity>, BaseRepository<ProductEntity>>();
-            services.AddScoped<IBaseRepository<ProjectStatusEntity>, BaseRepository<ProjectStatusEntity>>();
-            services.AddScoped<ProjectRepository>();
-            services.AddScoped<EmployeeRepository>();
-            services.AddScoped<ProjectStatusRepository>();
-            services.AddScoped<IStatusService, StatusService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<EmployeeService, EmployeeService>();
-            services.AddSingleton<MainWindow>();
-        }
+        //Services
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IStatusService, StatusService>();
+        services.AddScoped<IProjectService, ProjectService>();
+        
+        //MainWindow
+        services.AddSingleton<MainWindow>();
     }
 }

@@ -8,43 +8,67 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
-        <StackPanel Orientation="Vertical" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="19*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Margin="10,10,10,10" Grid.ColumnSpan="2">
 
             <TextBlock Text="Projektnamn:" FontSize="14"/>
             <TextBox Text="{Binding NewProject.ProjectName, Mode=TwoWay}"
                      Height="30" Padding="5"
                      VerticalContentAlignment="Center"/>
 
-            <TextBlock Text="ProduktId:" FontSize="14"/>
-            <TextBox Text="{Binding NewProject.ProductId, Mode=TwoWay}"
-                     Height="30" Padding="5"
-                     VerticalContentAlignment="Center"/>
 
-            <TextBlock Text="Anställd:" FontSize="14"/>
-            <TextBox Text="{Binding NewProject.EmployeeId, Mode=TwoWay}"
-         Height="30" Padding="5"
-         VerticalContentAlignment="Center"/>
+            <TextBlock Text="Produkt:" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding ProductOptions}" 
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding NewProject.ProductId, Mode=TwoWay}"
+                      Height="30" Padding="5"
+                      VerticalContentAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding ProductName}" />
+                            <TextBlock Text=" - " />
+                            <TextBlock Text="{Binding Price, StringFormat=C}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Text="Kund:" FontSize="14"/>
-            <TextBox Text="{Binding NewProject.CustomerId, Mode=TwoWay}"
-         Height="30" Padding="5"
-         VerticalContentAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding CustomerOptions}"
+        DisplayMemberPath="Name"
+        SelectedValuePath="CustomerId"
+        SelectedValue="{Binding NewProject.CustomerId, Mode=TwoWay}"
+        Height="30" Padding="5"
+        VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
 
+            <TextBlock Text="Anställd:" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding EmployeeOptions}" 
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding NewProject.EmployeeId, Mode=TwoWay}"
+                      Height="30" Padding="5"
+                      VerticalContentAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FirstName}" />
+                            <TextBlock Text=" " />
+                            <TextBlock Text="{Binding LastName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Text="Status:" FontSize="14"/>
             <ComboBox ItemsSource="{Binding StatusOptions}" 
-             DisplayMemberPath="StatusName"
-            SelectedValuePath="Id"
-            SelectedValue="{Binding NewProject.StatusId, Mode=TwoWay}"
-            Height="30" Padding="5"
-            VerticalContentAlignment="Center"/>
-
-            <!--<TextBlock Text="Anställd:" FontSize="14"/>
-            <ComboBox ItemsSource="{Binding EmployeeId}"
-            SelectedItem="{Binding NewProject.ProjectType, Mode=TwoWay}"
-            Height="30" Padding="5"
-            VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>-->
-
+                    DisplayMemberPath="StatusName"
+                    SelectedValuePath="Id"
+                    SelectedValue="{Binding NewProject.StatusId, Mode=TwoWay}"
+                    Height="30" Padding="5"
+                    VerticalContentAlignment="Center"/>
 
             <TextBlock Text="Startdatum:" FontSize="14"/>
             <DatePicker SelectedDate="{Binding NewProject.CreatedDate, Mode=TwoWay}"

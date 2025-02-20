@@ -8,11 +8,11 @@ namespace Business.Factories;
 
 public static class CustomerFactory
 {
-    public static CustomerEntity Create (string firstName)
+    public static CustomerEntity Create (string Name)
     {
         return new CustomerEntity
         {
-            Name = firstName,
+            Name = Name,
             
             
         };

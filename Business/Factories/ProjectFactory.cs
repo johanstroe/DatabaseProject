@@ -30,6 +30,21 @@ public static class ProjectFactory
             
         };
     }
+
+    public static ProjectEntity Create(UpdateProjectDto dto)
+    {
+        return new ProjectEntity
+        {
+            ProjectId = dto.ProjectId,
+            ProjectName = dto.ProjectName,
+            StartDate = dto.CreatedDate,
+            EndDate = dto.EndDate,
+            ProductId = dto.ProductId,
+            StatusId = dto.StatusId,
+            EmployeeId = dto.EmployeeId,
+            CustomerId = dto.CustomerId
+        };
+    }
     public static CreateProjectDto Create(ProjectEntity entity)
     {
         return new CreateProjectDto
@@ -53,8 +68,29 @@ public static class ProjectFactory
             EndDate = entity.EndDate,
             StatusName = entity.Status.StatusName,
             ProductName = entity.Product.ProductName,
+            ProductId = entity.Product.Id,
             ProductPrice = entity.Product.Price,
             EmployeeEmail = entity.Employee.Email,
+            EmployeeId = entity.EmployeeId,
+            CustomerId = entity.CustomerId,
+            StatusId = entity.StatusId
+          
+        };
+    }
+
+    public static UpdateProjectDto CreateUpdateDto(ProjectsDto dto)
+    {
+        return new UpdateProjectDto
+        {
+            ProjectId = dto.ProjectId,
+            ProjectName = dto.ProjectName,
+            CreatedDate = dto.StartDate,
+            ProductId = dto.ProductId,
+            StatusId = dto.StatusId,
+            EmployeeId = dto.EmployeeId,
+            CustomerId = dto.CustomerId,
+            ProductName = dto.ProductName,
+            Name = dto.Name
             
         };
     }

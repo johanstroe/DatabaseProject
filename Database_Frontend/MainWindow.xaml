@@ -1,17 +1,16 @@
-﻿
-    <Window x:Class="Database_Frontend.MainWindow"
+﻿<Window x:Class="Database_Frontend.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Project Management" Height="600" Width="900"
         Background="#ECEFF1" FontFamily="Segoe UI" WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
-        <DockPanel LastChildFill="True">
-            <!-- Sidomeny -->
-            <StackPanel DockPanel.Dock="Left" Background="#37474F" Width="auto" Height="Auto">
-                <TextBlock Text="Project Manager" Foreground="White" FontSize="22" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="0,10,0,20"/>
-            </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="12*"/>
+            <ColumnDefinition Width="43*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel LastChildFill="True" Grid.ColumnSpan="2">
+
 
             <!-- Huvudinnehåll -->
             <StackPanel Orientation="Vertical" Margin="20">
@@ -34,29 +33,36 @@
                           VerticalGridLinesBrush="#CFD8DC" >
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Projekt" Binding="{Binding ProjectName}" Width="100"/>
-                        <DataGridTextColumn Header="ProjektNummer" Binding="{Binding ProjectId}" Width="130"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding StatusName}" Width="100"/>
-                        <DataGridTextColumn Header="Startdatum" Binding="{Binding StartDate}" Width="100"/>
-                        <DataGridTextColumn Header="Product" Binding="{Binding EmployeeEmail}" Width="100" />
+                        <DataGridTextColumn Header="Projekt" Binding="{Binding ProjectName}" Width="auto"/>
+                        <DataGridTextColumn Header="ProjektNummer" Binding="{Binding ProjectId}" Width="auto"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusName}" Width="auto"/>
+                        <DataGridTextColumn Header="Startdatum" Binding="{Binding StartDate}" Width="auto"/>
+                        <DataGridTextColumn Header="Produkt" Binding="{Binding ProductId}" Width="auto"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding EmployeeEmail}" Width="auto" />
                     </DataGrid.Columns>
                 </DataGrid>
 
                 <!-- Knappar -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
                     <Button Content="Lägg till" Margin="5" Padding="10,6" 
                             Background="#03A9F4" Foreground="White" FontSize="14" FontWeight="Bold" Width="120"
                             BorderBrush="Transparent" Cursor="Hand" Click="OpenAddProjectWindow_Click"/>
 
-                    <Button Content="Redigera" Margin="5" Padding="10,6" Command="{Binding EditProjectCommand}" 
+                    <Button Content="Redigera" Margin="5" Padding="10,6" Click="OpenEditProjectWindow_Click" 
                             Background="#03A9F4" Foreground="White" FontSize="14" FontWeight="Bold" Width="120"
                             BorderBrush="Transparent" Cursor="Hand"/>
 
 
-                    <Button Content="Ta bort" Margin="5" Padding="10,6" Command="{Binding DeleteProjectCommand}" 
-                            CommandParameter="{Binding SelectedItem, ElementName=ProjectDataGrid}"
+                    <Button Content="Ta bort" Margin="5" Padding="10,6" 
+                            Click="DeleteProjects_click"
                             Background="#03A9F4" Foreground="White" FontSize="14" FontWeight="Bold" Width="120"
                             BorderBrush="Transparent" Cursor="Hand"/>
+
+
+                    <Button Content="Uppdatera" Click="RefreshProjects_Click"
+                            Margin="5" Padding="10,6" Background="#03A9F4"
+                            Foreground="White" FontSize="14" FontWeight="Bold"
+                            Width="120" BorderBrush="Transparent" Cursor="Hand"/>
                 </StackPanel>
             </StackPanel>
         </DockPanel>

@@ -7,7 +7,7 @@ using Data.Repositories;
 
 namespace Business.Services;
 
-public class EmployeeService(EmployeeRepository employeeRepository) : IUserService
+public class EmployeeService(EmployeeRepository employeeRepository) : IUserService, IEmployeeService
 {
     private readonly EmployeeRepository _employeeRepository = employeeRepository;
 

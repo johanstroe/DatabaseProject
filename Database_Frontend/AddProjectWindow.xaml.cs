@@ -2,6 +2,7 @@
 using System.Windows;
 using Business.Dtos;
 using Business.Interfaces;
+using Business.Services;
 using Data.Entities;
 
 
@@ -11,29 +12,42 @@ namespace Database_Frontend.Views
     {
         private readonly IStatusService _statusService;
         private readonly IProjectService _projectService;
+        private readonly IEmployeeService _employeeService;
+        private readonly ICustomerService _customerService;
+        private readonly IProductService _productService;
 
         public CreateProjectDto NewProject { get; private set; }
         public ObservableCollection<ProjectStatusEntity> StatusOptions { get; private set; }
+        public ObservableCollection<EmployeeEntity> EmployeeOptions { get; private set; } = [];
+        public ObservableCollection<CustomerEntity> CustomerOptions { get; private set; } = [];
+        public ObservableCollection<ProductEntity> ProductOptions { get; private set; } = [];
+
         public ObservableCollection<string> ProjectTypes { get; private set; }
 
-        public AddProjectWindow(IStatusService statusService, IProjectService projectService)
+        public AddProjectWindow(IStatusService statusService, IProjectService projectService, IEmployeeService employeeService, ICustomerService customerService, IProductService productService)
         {
             InitializeComponent();
             _statusService = statusService;
             _projectService = projectService;
- 
+            _employeeService = employeeService;
+            _customerService = customerService;
+            _productService = productService;
             NewProject = new CreateProjectDto();
             StatusOptions = [];
             ProjectTypes = new ObservableCollection<string>
             {
-                "Customer",
                 "Employee",
+                "Customer",
                 "Product"
             };
 
             LoadStatusOptions();
+            LoadEmployeeOptions();
+            LoadProductsOptions();
+            LoadCustomerOptions();
 
             DataContext = this;
+            _customerService = customerService;
         }
 
         private async void LoadStatusOptions()
@@ -46,6 +60,50 @@ namespace Database_Frontend.Views
                 foreach (var status in statuses)
                 {
                     StatusOptions.Add(status);
+                }
+            }
+        }
+
+
+        private async void LoadEmployeeOptions()
+        {
+            var employees = await _employeeService.GetAllAsync();
+            EmployeeOptions.Clear();
+
+            if (employees != null)
+            {
+                foreach (var employee in employees)
+                {
+                    EmployeeOptions.Add(employee);
+                }
+            }
+        }
+
+
+        private async void LoadCustomerOptions()
+        {
+            var customers = await _customerService.GetAllAsync();
+            CustomerOptions.Clear();
+
+            if (customers != null)
+            {
+                foreach (var customer in customers)
+                {
+                    CustomerOptions.Add(customer);
+                }
+            }
+        }
+
+        private async void LoadProductsOptions()
+        {
+            var products = await _productService.GetAllAsync();
+            ProductOptions.Clear();
+
+            if (products != null)
+            {
+                foreach (var product in products)
+                {
+                    ProductOptions.Add(product);
                 }
             }
         }
@@ -64,6 +122,15 @@ namespace Database_Frontend.Views
                 MessageBox.Show("Du måste välja en status!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            MessageBox.Show($"Projekt: {NewProject.ProjectName}\n" +
+                $"Startdatum: {NewProject.CreatedDate}\n" +
+                $"Slutdatum: {NewProject.EndDate}\n" +
+                $"StatusId: {NewProject.StatusId}\n" +
+                $"EmployeeId: {NewProject.EmployeeId}\n" +
+                $"CustomerId: {NewProject.CustomerId}\n" +
+                $"ProductId: {NewProject.ProductId}",
+                "Debug - Före Save", MessageBoxButton.OK, MessageBoxImage.Information);
             try
             {
                 var projectDto = new CreateProjectDto
@@ -85,8 +152,12 @@ namespace Database_Frontend.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ett fel uppstod: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                var errorMessage = $"Ett fel uppstod: {ex.Message}";
+
+                MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
 
         }
 

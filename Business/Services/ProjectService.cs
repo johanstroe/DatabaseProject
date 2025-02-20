@@ -1,4 +1,4 @@
-﻿
+﻿ 
 
 using Business.Dtos;
 using Business.Factories;
@@ -9,10 +9,10 @@ using Data.Repositories;
 
 namespace Business.Services;
 
-public class ProjectService(ProjectRepository projectRepository, EmployeeService userService) : IProjectService
+public class ProjectService(ProjectRepository projectRepository, IEmployeeService employeeService) : IProjectService
 {
     private readonly ProjectRepository _projectRepository = projectRepository;
-    private readonly EmployeeService _userService = userService;
+    private readonly IEmployeeService employeeService = employeeService;
 
     public async Task<bool> CreateProjectAsync(CreateProjectDto dto)
     {

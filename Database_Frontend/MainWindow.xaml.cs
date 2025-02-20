@@ -1,7 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using Business.Dtos;
+using Business.Factories;
 using Business.Interfaces;
+using Business.Services;
 using Data.Entities;
 using Database_Frontend.Views;
 
@@ -11,23 +15,41 @@ namespace Database_Frontend
     {
         private readonly IStatusService _statusService;
         private readonly IProjectService _projectService;
+        private readonly IEmployeeService _employeeService;
+        private readonly ICustomerService _customerService;
+        private readonly IProductService _productService;
 
         public ObservableCollection<ProjectStatusEntity> StatusOptions { get; set; } = [];
+        public ObservableCollection<ProjectStatusEntity> CustomerOptions { get; set; } = [];
+
+        public ObservableCollection<ProjectStatusEntity> EmployeeOptions { get; set; } = [];
+
+        public ObservableCollection<ProjectStatusEntity> ProductOptions { get; set; } = [];
         public ObservableCollection<ProjectsDto> Projects { get; set; } = [];
-        public MainWindow(IStatusService statusService, IProjectService projectService)
+        public MainWindow(IStatusService statusService, IProjectService projectService, IEmployeeService employeeService, ICustomerService customerService, IProductService productService)
         {
             InitializeComponent();
-            
+
             _statusService = statusService;
             _projectService = projectService;
+            _employeeService = employeeService;
+            _customerService = customerService;
+            _productService = productService;
 
-            LoadProjects();
+           
             DataContext = this;
+            Loaded += MainWindow_Loaded;
+
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadProjects();
         }
 
         private void ProjectDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            
+
         }
 
 
@@ -35,12 +57,10 @@ namespace Database_Frontend
         {
             var newProject = new ProjectEntity
             {
-                ProjectName = "Nytt Projekt", // Kan vara tomt om du vill att användaren ska fylla i det
-                StatusId = 1, // Standardstatus, om du har en sådan
-                StartDate = DateTime.Now
+
             };
 
-            var addProjectWindow = new AddProjectWindow(_statusService, _projectService);
+            var addProjectWindow = new AddProjectWindow(_statusService, _projectService, _employeeService, _customerService, _productService);
             if (addProjectWindow.ShowDialog() == true)
             {
                 LoadProjects(); // Uppdatera listan efter att ett projekt lagts till
@@ -52,23 +72,25 @@ namespace Database_Frontend
         {
             if (ProjectDataGrid.SelectedItem is ProjectsDto selectedProject)
             {
-                var projectEntity = new ProjectEntity
-                {
-                    ProjectId = selectedProject.ProjectId,
-                    ProjectName = selectedProject.ProjectName,
-                    StatusId = selectedProject.StatusId,
-                    StartDate = selectedProject.StartDate
-                };
+                Debug.WriteLine($"Valt Projekt: {selectedProject.ProjectName}, Status: {selectedProject.StatusName}, " +
+                          $"CustomerId: {selectedProject.CustomerId}, Email: {selectedProject.EmployeeEmail}");
+                var updateProjectDto = ProjectFactory.CreateUpdateDto(selectedProject);
 
-                var editWindow = new EditProjectWindow(_projectService, projectEntity);
-                editWindow.ShowDialog();
+                var editWindow = new EditProjectWindow(_projectService, _statusService, _employeeService, _customerService, _productService, updateProjectDto);
+
+                bool? result = editWindow.ShowDialog();
+
+                if (result == true)
+                {
+                    LoadProjects();
+                }
             }
             else
             {
                 MessageBox.Show("Välj ett projekt att redigera!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        
+
 
         private async void LoadProjects()
         {
@@ -83,5 +105,48 @@ namespace Database_Frontend
             //var projectsFromDb = await _projectService.GetAllAsync();
             //Projects = new ObservableCollection<ProjectsDto>(projectsFromDb);
         }
+
+        private void RefreshProjects_Click(object sender, RoutedEventArgs e)
+        {
+            LoadProjects();
+            MessageBox.Show("Sidan har uppdaterats!", "Uppdaterad", MessageBoxButton.OK, MessageBoxImage.None);
+        }
+
+        private async void DeleteProjects_click(object sender, RoutedEventArgs e)
+        {
+            if (ProjectDataGrid.SelectedItem is ProjectsDto selectedProject)
+            {
+                var result = MessageBox.Show($"Är du säker på att du vill ta bort projektet '{selectedProject.ProjectName}'?",
+                                             "Bekräfta borttagning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        bool success = await _projectService.DeleteAsync(selectedProject.ProjectId);
+
+                        if (success)
+                        {
+                            MessageBox.Show("Projektet har tagits bort!", "Klart", MessageBoxButton.OK);
+                            LoadProjects(); 
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Projektet kunde inte tas bort. ProjectId: {selectedProject.ProjectId}",
+                               "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ett fel uppstod: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Välj ett projekt att ta bort!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
     }
 }
